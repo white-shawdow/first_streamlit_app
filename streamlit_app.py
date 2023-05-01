@@ -22,31 +22,36 @@ streamlit.dataframe(fruits_to_show)
 
 
 streamlit.header("Fruityvice Fruit Advice!")
+
+def get_fruityvice_data(fruit):
+  fruityvice_response = requests.get(f"https://fruityvice.com/api/fruit/{fruit}")
+  fruit_normalized = pandas.json_normalize(fruityvice_response.json())
+  return  fruit_normalized 
+
+
 try: 
   fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
   if not fruit_choice:
     streamlit.error("Please select a fruit to get information")
   else:
-    fruityvice_response = requests.get(f"https://fruityvice.com/api/fruit/{fruit_choice}")
-    fruit_normalized = pandas.json_normalize(fruityvice_response.json())
-    streamlit.dataframe(fruit_normalized)
-
-except URLErro as e:
+    back_from_function = get_fruity_vice_data(fruit_choice)
+    streamlit.dataframe(back_from_function)
+except URLError as e:
     streamlit.error()
     
     
-streamlit.stop()
+# streamlit.stop()
 
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
+# my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+# my_cur = my_cnx.cursor()
 
-my_cur.execute("SELECT * from pc_rivery_db.public.FRUIT_LOAD_LIST")
-my_data_rows = my_cur.fetchall()
-streamlit.text("The fruit load list contains")
-streamlit.dataframe(my_data_rows)
+# my_cur.execute("SELECT * from pc_rivery_db.public.FRUIT_LOAD_LIST")
+# my_data_rows = my_cur.fetchall()
+# streamlit.text("The fruit load list contains")
+# streamlit.dataframe(my_data_rows)
 
-new_fruit_choice = streamlit.text_input('What you like to add a fruit?','Add new fruit here')
+# new_fruit_choice = streamlit.text_input('What you like to add a fruit?','Add new fruit here')
 
-streamlit.write('Thank you for adding', new_fruit_choice)\
-my_cur.execute("insert into fruit_load_list_values ('from streamlit')")
-#fruityvice_response = requests.put(f"https://fruityvice.com/api/fruit/{fruit_choice}")
+# streamlit.write('Thank you for adding', new_fruit_choice)\
+# my_cur.execute("insert into fruit_load_list_values ('from streamlit')")
+# #fruityvice_response = requests.put(f"https://fruityvice.com/api/fruit/{fruit_choice}")
