@@ -39,4 +39,11 @@ my_data_rows = my_cur.fetchall()
 streamlit.text("The fruit load list contains")
 streamlit.dataframe(my_data_rows)
 
+fruit_choice = streamlit.text_input('What you like to add a fruit?','Add new fruit here')
 
+streamlit.write('The user entered ', fruit_choice)
+
+fruityvice_response = requests.put(f"https://fruityvice.com/api/fruit/{fruit_choice}")
+my_cur.execute("SELECT * from pc_rivery_db.public.FRUIT_LOAD_LIST")
+my_data_rows = my_cur.fetchall()
+streamlit.text("The fruit load list now contains")
