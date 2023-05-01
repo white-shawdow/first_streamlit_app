@@ -40,18 +40,21 @@ except URLError as e:
     streamlit.error()
     
     
-# streamlit.stop()
+def insert_SF(new_fruit):
+  with my_cnx_cursor() as my_cur:
+    my_cur.execute("insert into fruit_load_list_values ('from streamlit')")
+    return f"Thanks for adding {new_fruit}"
+  
+new_fruit_choice = streamlit.text_input('What you like to add a fruit?','Add new fruit here')
 
-# my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-# my_cur = my_cnx.cursor()
+if streamlit.button('Add a fruit to the list"):
+  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+  back_from_function = insert_row_snowflake(add_my_fruit)
+  streamlit.txt(back_from_function)
 
-# my_cur.execute("SELECT * from pc_rivery_db.public.FRUIT_LOAD_LIST")
-# my_data_rows = my_cur.fetchall()
-# streamlit.text("The fruit load list contains")
-# streamlit.dataframe(my_data_rows)
 
-# new_fruit_choice = streamlit.text_input('What you like to add a fruit?','Add new fruit here')
 
-# streamlit.write('Thank you for adding', new_fruit_choice)\
-# my_cur.execute("insert into fruit_load_list_values ('from streamlit')")
-# #fruityvice_response = requests.put(f"https://fruityvice.com/api/fruit/{fruit_choice}")
+
+streamlit.write('Thank you for adding', new_fruit_choice)
+
+#fruityvice_response = requests.put(f"https://fruityvice.com/api/fruit/{fruit_choice}")
