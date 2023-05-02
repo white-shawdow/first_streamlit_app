@@ -52,9 +52,11 @@ if streamlit.button('Add a fruit to the list'):
   back_from_function = insert_SF(new_fruit_choice)
   streamlit.text(back_from_function)
 
+if streamlit.button('Get Fruit List'):
+  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+  my_data_rows = get_fruity_vice_data()
+  my_cnx.close()
+  streamlit.dataframe(my_data_rows)
+ 
 
 
-
-streamlit.write('Thank you for adding', new_fruit_choice)
-
-#fruityvice_response = requests.put(f"https://fruityvice.com/api/fruit/{fruit_choice}")
